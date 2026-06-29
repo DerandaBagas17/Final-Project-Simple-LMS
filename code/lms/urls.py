@@ -20,5 +20,5 @@ from .apiv1 import apiv1
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', apiv1.urls),
+    path('api/v1/', apiv1.urls),
 ]

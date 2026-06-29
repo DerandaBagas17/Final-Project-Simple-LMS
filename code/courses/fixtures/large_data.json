@@ -1,0 +1,479 @@
+[
+  {
+    "model": "courses.category",
+    "pk": 100,
+    "fields": {
+      "name": "Web Development",
+      "parent": null
+    }
+  },
+  {
+    "model": "courses.category",
+    "pk": 101,
+    "fields": {
+      "name": "Data Science",
+      "parent": null
+    }
+  },
+  {
+    "model": "courses.category",
+    "pk": 102,
+    "fields": {
+      "name": "Cyber Security",
+      "parent": null
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 100,
+    "fields": {
+      "title": "Fullstack Django & React",
+      "description": "Pelajari seluk beluk Fullstack Django & React secara mendalam.",
+      "category": 100,
+      "instructor": 2,
+      "created_at": "2026-06-29T10:00:00Z"
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 101,
+    "fields": {
+      "title": "Machine Learning 101",
+      "description": "Pelajari seluk beluk Machine Learning 101 secara mendalam.",
+      "category": 101,
+      "instructor": 2,
+      "created_at": "2026-06-29T10:00:00Z"
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 102,
+    "fields": {
+      "title": "Ethical Hacking Basics",
+      "description": "Pelajari seluk beluk Ethical Hacking Basics secara mendalam.",
+      "category": 102,
+      "instructor": 2,
+      "created_at": "2026-06-29T10:00:00Z"
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1000,
+    "fields": {
+      "course": 100,
+      "title": "Bab 1: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 1 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 1
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1001,
+    "fields": {
+      "course": 100,
+      "title": "Bab 2: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 2 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 2
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1002,
+    "fields": {
+      "course": 100,
+      "title": "Bab 3: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 3 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 3
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1003,
+    "fields": {
+      "course": 100,
+      "title": "Bab 4: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 4 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 4
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1004,
+    "fields": {
+      "course": 100,
+      "title": "Bab 5: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 5 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 5
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1005,
+    "fields": {
+      "course": 100,
+      "title": "Bab 6: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 6 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 6
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1006,
+    "fields": {
+      "course": 100,
+      "title": "Bab 7: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 7 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 7
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1007,
+    "fields": {
+      "course": 100,
+      "title": "Bab 8: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 8 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 8
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1008,
+    "fields": {
+      "course": 100,
+      "title": "Bab 9: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 9 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 9
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1009,
+    "fields": {
+      "course": 100,
+      "title": "Bab 10: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 10 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 10
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1010,
+    "fields": {
+      "course": 100,
+      "title": "Bab 11: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 11 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 11
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1011,
+    "fields": {
+      "course": 100,
+      "title": "Bab 12: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 12 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 12
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1012,
+    "fields": {
+      "course": 100,
+      "title": "Bab 13: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 13 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 13
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1013,
+    "fields": {
+      "course": 100,
+      "title": "Bab 14: Pengenalan Fullstack Django & React",
+      "content": "Ini adalah materi lengkap untuk Bab 14 dari kursus Fullstack Django & React. Selamat belajar!",
+      "order": 14
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1014,
+    "fields": {
+      "course": 101,
+      "title": "Bab 1: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 1 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 1
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1015,
+    "fields": {
+      "course": 101,
+      "title": "Bab 2: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 2 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 2
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1016,
+    "fields": {
+      "course": 101,
+      "title": "Bab 3: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 3 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 3
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1017,
+    "fields": {
+      "course": 101,
+      "title": "Bab 4: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 4 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 4
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1018,
+    "fields": {
+      "course": 101,
+      "title": "Bab 5: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 5 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 5
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1019,
+    "fields": {
+      "course": 101,
+      "title": "Bab 6: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 6 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 6
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1020,
+    "fields": {
+      "course": 101,
+      "title": "Bab 7: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 7 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 7
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1021,
+    "fields": {
+      "course": 101,
+      "title": "Bab 8: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 8 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 8
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1022,
+    "fields": {
+      "course": 101,
+      "title": "Bab 9: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 9 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 9
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1023,
+    "fields": {
+      "course": 101,
+      "title": "Bab 10: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 10 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 10
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1024,
+    "fields": {
+      "course": 101,
+      "title": "Bab 11: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 11 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 11
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1025,
+    "fields": {
+      "course": 101,
+      "title": "Bab 12: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 12 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 12
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1026,
+    "fields": {
+      "course": 101,
+      "title": "Bab 13: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 13 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 13
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1027,
+    "fields": {
+      "course": 101,
+      "title": "Bab 14: Pengenalan Machine Learning 101",
+      "content": "Ini adalah materi lengkap untuk Bab 14 dari kursus Machine Learning 101. Selamat belajar!",
+      "order": 14
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1028,
+    "fields": {
+      "course": 102,
+      "title": "Bab 1: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 1 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 1
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1029,
+    "fields": {
+      "course": 102,
+      "title": "Bab 2: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 2 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 2
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1030,
+    "fields": {
+      "course": 102,
+      "title": "Bab 3: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 3 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 3
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1031,
+    "fields": {
+      "course": 102,
+      "title": "Bab 4: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 4 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 4
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1032,
+    "fields": {
+      "course": 102,
+      "title": "Bab 5: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 5 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 5
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1033,
+    "fields": {
+      "course": 102,
+      "title": "Bab 6: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 6 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 6
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1034,
+    "fields": {
+      "course": 102,
+      "title": "Bab 7: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 7 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 7
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1035,
+    "fields": {
+      "course": 102,
+      "title": "Bab 8: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 8 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 8
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1036,
+    "fields": {
+      "course": 102,
+      "title": "Bab 9: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 9 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 9
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1037,
+    "fields": {
+      "course": 102,
+      "title": "Bab 10: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 10 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 10
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1038,
+    "fields": {
+      "course": 102,
+      "title": "Bab 11: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 11 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 11
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1039,
+    "fields": {
+      "course": 102,
+      "title": "Bab 12: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 12 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 12
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1040,
+    "fields": {
+      "course": 102,
+      "title": "Bab 13: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 13 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 13
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1041,
+    "fields": {
+      "course": 102,
+      "title": "Bab 14: Pengenalan Ethical Hacking Basics",
+      "content": "Ini adalah materi lengkap untuk Bab 14 dari kursus Ethical Hacking Basics. Selamat belajar!",
+      "order": 14
+    }
+  }
+]

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1ou$wca=236e5z2!&+j(ijtlm(c!itn%i36drj)_6y9^ghaf9!"
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-1ou$wca=236e5z2!&+j(ijtlm(c!itn%i36drj)_6y9^ghaf9!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 
 # Application definition
@@ -78,11 +79,11 @@ WSGI_APPLICATION = "lms.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "lms_db",
-        "USER": "lms_user",
-        "PASSWORD": "lms_password",
-        "HOST": "db",
-        "PORT": "5432",
+        "NAME": os.environ.get("POSTGRES_DB", "lms_db"),
+        "USER": os.environ.get("POSTGRES_USER", "lms_user"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "lms_password"),
+        "HOST": os.environ.get("POSTGRES_HOST", "db"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 
@@ -135,8 +136,8 @@ CACHES = {
     }
 }
 # 2. Celery Configuration
-CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq:5672/"
-CELERY_RESULT_BACKEND = "redis://redis:6379/0"
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672/")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = "UTC"
@@ -153,5 +154,5 @@ CELERY_BEAT_SCHEDULE = {
 # 3. MongoDB Configuration (PyMongo)
 # pyrefly: ignore [missing-import]
 import pymongo
-MONGO_CLIENT = pymongo.MongoClient("mongodb://mongodb:27017/")
-MONGO_DB = MONGO_CLIENT["lms_mongodb"]
+MONGO_CLIENT = pymongo.MongoClient(os.environ.get("MONGO_URL", "mongodb://mongodb:27017/"))
+MONGO_DB = MONGO_CLIENT[os.environ.get("MONGO_DB_NAME", "lms_mongodb")]

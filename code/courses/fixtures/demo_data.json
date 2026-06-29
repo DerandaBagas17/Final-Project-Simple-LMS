@@ -1,0 +1,49 @@
+[
+  {
+    "model": "courses.category",
+    "pk": 1,
+    "fields": {
+      "name": "Data Science",
+      "parent": null
+    }
+  },
+  {
+    "model": "courses.category",
+    "pk": 2,
+    "fields": {
+      "name": "Machine Learning",
+      "parent": 1
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 1,
+    "fields": {
+      "title": "Machine Learning untuk Pemula",
+      "description": "Pelajari dasar-dasar Machine Learning secara praktikal menggunakan Python dan Scikit-Learn.",
+      "category": 2,
+      "instructor": 2,
+      "created_at": "2026-06-22T10:00:00Z"
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "title": "Bab 1: Pengenalan AI & ML",
+      "content": "Pada bab ini kita akan membahas sejarah dan perbedaan mendasar antara Artificial Intelligence dan Machine Learning.",
+      "order": 1
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "title": "Bab 2: Regresi Linear",
+      "content": "Memahami konsep matematika di balik Regresi Linear dan bagaimana mengimplementasikannya dalam kode.",
+      "order": 2
+    }
+  }
+]

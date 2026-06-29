@@ -1,0 +1,132 @@
+[
+  {
+    "model": "courses.lesson",
+    "pk": 4,
+    "fields": {
+      "course": 2,
+      "title": "Bab 2: Instalasi dan Setup Django Ninja",
+      "content": "Panduan langkah demi langkah menginstal Django Ninja di lingkungan virtual dan melakukan inisialisasi project API pertama Anda.",
+      "order": 2
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 5,
+    "fields": {
+      "course": 2,
+      "title": "Bab 3: Konsep Dasar Routing",
+      "content": "Mempelajari cara mendefinisikan routing dengan dekorator @api.get dan @api.post beserta parameter path dan query string.",
+      "order": 3
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 6,
+    "fields": {
+      "course": 2,
+      "title": "Bab 4: Pydantic Schema & Validasi Data",
+      "content": "Memahami penggunaan Schema (Model Pydantic) untuk memvalidasi request body secara otomatis tanpa if-else manual.",
+      "order": 4
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 7,
+    "fields": {
+      "course": 2,
+      "title": "Bab 5: Menghubungkan API dengan ORM",
+      "content": "Praktik menyambungkan endpoint API langsung dengan Django ORM untuk berinteraksi dengan database secara efisien.",
+      "order": 5
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 8,
+    "fields": {
+      "course": 2,
+      "title": "Bab 6: Implementasi CRUD (Create & Read)",
+      "content": "Membangun endpoint untuk menambahkan data baru (POST) dan menampilkan daftar data (GET) dalam format JSON.",
+      "order": 6
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 9,
+    "fields": {
+      "course": 2,
+      "title": "Bab 7: Implementasi CRUD (Update & Delete)",
+      "content": "Melengkapi siklus CRUD dengan endpoint untuk mengubah (PUT/PATCH) dan menghapus (DELETE) data.",
+      "order": 7
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 10,
+    "fields": {
+      "course": 2,
+      "title": "Bab 8: Autentikasi JWT (JSON Web Token)",
+      "content": "Konsep dasar Token-Based Authentication dan cara melindungi endpoint agar hanya bisa diakses pengguna yang login.",
+      "order": 8
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 11,
+    "fields": {
+      "course": 2,
+      "title": "Bab 9: Otorisasi Berbasis Peran (Role-Based)",
+      "content": "Membatasi akses pengguna. Bagaimana membuat agar endpoint tertentu hanya boleh diakses oleh Admin atau Instruktur.",
+      "order": 9
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 12,
+    "fields": {
+      "course": 2,
+      "title": "Bab 10: Optimasi Query Database (N+1 Problem)",
+      "content": "Teknik tingkat lanjut menggunakan select_related dan prefetch_related untuk mencegah masalah N+1 Query pada API.",
+      "order": 10
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 13,
+    "fields": {
+      "course": 2,
+      "title": "Bab 11: Caching API dengan Redis",
+      "content": "Meningkatkan performa response API hingga 10x lipat dengan menyimpan cache data yang sering diakses ke dalam Redis.",
+      "order": 11
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 14,
+    "fields": {
+      "course": 2,
+      "title": "Bab 12: Fitur Pagination & Filtering",
+      "content": "Memecah payload JSON yang terlalu besar dengan paginasi, dan menambahkan fitur pencarian (search/filter).",
+      "order": 12
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 15,
+    "fields": {
+      "course": 2,
+      "title": "Bab 13: Background Task dengan Celery",
+      "content": "Cara mendelegasikan tugas berat (seperti kirim email atau export CSV) agar berjalan di latar belakang menggunakan Celery & RabbitMQ.",
+      "order": 13
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 16,
+    "fields": {
+      "course": 2,
+      "title": "Bab 14: Deployment dan Dockerisasi",
+      "content": "Membungkus aplikasi dengan Docker Compose dan panduan deploy API ke server production Linux.",
+      "order": 14
+    }
+  }
+]

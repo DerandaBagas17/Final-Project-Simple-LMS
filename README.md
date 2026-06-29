@@ -1,44 +1,113 @@
-# Simple LMS - Advanced API Features
+# Simple LMS - Platform Pembelajaran Interaktif
 
-Proyek ini adalah sistem Learning Management System (LMS) sederhana yang dibangun dengan **Django Ninja** dan dijalankan sepenuhnya menggunakan **Docker Compose**. 
+Simple LMS (Learning Management System) adalah platform pembelajaran digital terpadu yang dirancang untuk menjembatani interaksi akademik antara pengajar dan siswa secara terstruktur dan efisien. 
 
-Pada fase lanjutan ini, proyek telah diintegrasikan dengan arsitektur *microservices* modern menggunakan **Redis, RabbitMQ, Celery, MongoDB, dan Flower** untuk menangani *caching*, *rate limiting*, tugas latar belakang (*background tasks*), dan pencatatan aktivitas (*activity logging*).
+Sistem ini memfasilitasi tiga peran utama:
+- **Administrator** sebagai pemegang kendali utama untuk mengatur kategori pembelajaran (seperti Fakultas atau Program Studi) dan mengelola akun pengguna.
+- **Instructor (Pengajar/Dosen)** yang dapat dengan mudah membuat kursus (Course), menyusun modul pembelajaran (Lesson) secara berurutan, serta memantau perkembangan siswa.
+- **Student (Siswa/Mahasiswa)** yang memiliki kebebasan untuk mengeksplorasi kursus, mendaftar ke kelas yang diminati (Enrollment), mengikuti materi secara bertahap, mencatat ketuntasan belajar (Progress), hingga pada akhirnya berhak mencetak sertifikat kelulusan.
 
-## 1. Architecture Diagram
-![Architecture Diagram](./screenshoot/Architecture_Redis_Celery_MongoDB.png)
+Melalui arsitektur sistem yang dioptimalkan dengan proses asinkron dan analitik data, Simple LMS memastikan pengalaman belajar yang cepat, responsif, dan terdokumentasi dengan baik.
 
-**Penjelasan Alur Arsitektur:**
-Sistem ini menggunakan arsitektur *Microservices-oriented* yang memisahkan beban kerja ke beberapa komponen spesifik:
-- **Client & API (Django)**: Bertindak sebagai otak utama yang merespon HTTP *request* secara langsung.
-- **Data Storage Tier**: Menggunakan **PostgreSQL** (relasional), **Redis** (*In-Memory* untuk Cache & Rate Limit), dan **MongoDB** (NoSQL khusus untuk Activity Logs).
-- **Background Tasks Tier**: API melempar tugas berat ke **RabbitMQ** (Message Broker). **Celery Worker** mengeksekusi antrean tugas di latar belakang, **Celery Beat** mengatur tugas terjadwal, dan **Flower** memonitor semuanya.
+## 1. Cara Menjalankan Project
 
-## 2. Caching Strategy Explanation
-Sistem ini menggunakan strategi **Cache-Aside Pattern** dengan bantuan Redis:
-1. **Cek Cache**: Saat *user* meminta data (contoh: daftar kursus), sistem pertama kali akan mencari data tersebut di dalam memori Redis.
-2. **Cache Hit**: Jika data ditemukan di Redis, sistem langsung mengembalikannya ke *user* dengan sangat cepat tanpa perlu menyentuh *database* PostgreSQL.
-3. **Cache Miss**: Jika data tidak ada di Redis, sistem akan melakukan *query* ke PostgreSQL, lalu **menyimpan salinan hasilnya ke Redis** (dengan waktu kedaluwarsa/TTL 15 menit). *Request* berikutnya akan dilayani langsung oleh Redis.
+Ikuti langkah-langkah di bawah ini untuk menyalakan keseluruhan sistem di komputer/server Anda:
 
-**Bukti Pengujian Caching & Rate Limiting (Redis):**
-![Bukti Cache Berhasil (200 OK)](./screenshoot/rate%20limit%20200%20ok.png)
-![Bukti Rate Limit (429 Too Many Requests)](./screenshoot/rate%20limit%20erorr%20many%20request.png)
-![Bukti Terminal CLI (Redis & MongoDB)](./screenshoot/cli%20rate%20limit.png)
+1. **Konfigurasi Environment**
+   Salin file konfigurasi *dummy* menjadi file konfigurasi rahasia Anda. Di dalam terminal, jalankan (atau copy-paste secara manual file `.env.example` lalu ubah namanya menjadi `.env`):
+   ```bash
+   cp .env.example .env
+   ```
+2. **Membangun dan Menjalankan Sistem**
+   Jalankan kontainer Docker untuk menyalakan Simple LMS:
+   
+   ![Proses Build Docker](./screenshoot/docker_compose_up_build.png)
+   
+   ```bash
+   docker-compose up -d --build
+   ```
+   
+   ![Hasil Build Docker](./screenshoot/docker_compose_up_succes.png)
+   
+   *Catatan: Jika terminal Anda menampilkan output dengan tulisan `Started` atau `Created` berwarna hijau, itu artinya seluruh kontainer Docker Anda telah berhasil dibangun dan berjalan normal di latar belakang.*
 
-## 3. Task Flow Documentation
-Sistem memiliki 4 tugas Celery (*background tasks*) dengan alur operasional sebagai berikut:
-1. **`export_course_report` (Manual Asinkron)**: Dipicu oleh *user* via API `/api/analytics/export/`. API memberikan respon instan kepada *user*, sementara Celery menyusun laporan CSV di latar belakang.
-2. **`send_enrollment_email` (Otomatis Asinkron)**: Terpicu saat *user* mendaftar kursus (`/api/courses/{id}/enroll`). API langsung merespon "Berhasil mendaftar", sedangkan proses pengiriman *email* dilempar ke RabbitMQ untuk ditangani oleh Worker.
-3. **`generate_certificate` (Otomatis Asinkron)**: Terpicu saat meminta sertifikat (`/api/courses/{id}/certificate`). Pembuatan PDF sertifikat yang memakan waktu lama diproses oleh Celery tanpa memblokir koneksi *user*.
-4. **`update_course_statistics` (Terjadwal / Periodic)**: Tidak dipicu oleh *user*. Mesin **Celery Beat** bertugas melempar tugas ini ke RabbitMQ secara otomatis setiap 1 menit. Worker kemudian mengeksekusinya untuk memperbarui data statistik di *database*.
+3. **Memeriksa Status Kontainer**
+   Untuk memastikan bahwa semua *service* benar-benar berstatus menyala (`Up`), jalankan perintah berikut:
+   ```bash
+   docker-compose ps
+   ```
+   
+   ![Status Kontainer](./screenshoot/docker_ps.png)
+   
+   *Catatan: Pastikan semua kontainer (seperti web, db, redis, celery) memiliki status `Up` dan tidak ada yang `Exit`.*
+4. **Membangun Tabel Database (Migration)**
+   Setelah semua kontainer berstatus `running`, bangun tabel-tabel di dalam database PostgreSQL menggunakan file migrasi yang sudah tersedia dengan perintah:
+   
+   ```bash
+   docker-compose exec web python manage.py migrate
+   ```
+   
+   *Catatan: Jika terminal Anda dipenuhi oleh teks hijau bertuliskan `Applying... OK`, itu menandakan bahwa semua tabel dan struktur relasi database Anda telah berhasil di-install ke dalam kontainer PostgreSQL dengan sempurna.*
 
-**Bukti Pengujian Task Flow (Celery & Flower):**
-![Bukti Trigger Task Email](./screenshoot/task%20enrollment%20email.png)
-![Bukti Trigger Task Certificate](./screenshoot/task%20certificate.png)
-![Bukti Trigger Task Export](./screenshoot/task%20export%20csv.png)
-![Bukti 4 Task Sukses di Flower](./screenshoot/4%20task%20celery.png)
+5. **Generate Akun Demo (Seeding)**
+   Jalankan skrip *seeder* di bawah ini untuk membuat akun Admin, Instruktur, dan Siswa secara otomatis sehingga Anda bisa langsung menguji sistem tanpa perlu repot mendaftar:
+   
+   ```bash
+   docker-compose exec web python manage.py seed_demo
+   ```
+   
+   *Catatan: Script ini menggunakan `create_superuser` untuk otomatis mengenkripsi password Anda (hashing PBKDF2) agar terjamin keamanannya.*
 
-**Bukti Pengujian Activity Logger (MongoDB):**
-![Bukti MongoDB](./screenshoot/cli%20mongo%20db.png)
+6. **Memuat Data Kursus Awal (Fixtures)**
+   Untuk mempermudah pengujian pendaftaran (*Enrollment*), Anda dapat memuat kumpulan data percontohan berupa Kategori, Kursus, dan Materi (Lessons) sekaligus ke dalam database tanpa perlu membuatnya satu per satu secara manual.
+   
+   ```bash
+   docker-compose exec web python manage.py loaddata courses/fixtures/demo_data.json
+   ```
+   
+   *Catatan: Jika Anda melihat pesan `Installed 5 object(s)`, itu berarti seluruh data telah sukses terpasang.*
+
+## 2. Akun Demo (Testing)
+
+Setelah Anda menjalankan perintah `seed_demo` di atas, gunakan daftar akun di bawah ini untuk mencoba *login* ke dalam sistem. Anda tidak perlu melakukan registrasi lagi.
+
+| Role | Username / Email | Password | Keterangan / Hak Akses |
+|---|---|---|---|
+| **Admin** | `admin` | `admin123` | Dapat mengelola Kategori, Course, pengguna, dan pengaturan sistem. |
+| **Instructor** | `dosen` | `dosen123` | Bertugas membuat Course, menyusun materi (Lesson), dan memantau siswa. |
+| **Instructor 2**| `dosen1` | `dosen123` | Akun dosen tambahan untuk menguji simulasi keamanan lintas-akses. |
+| **Student** | `student` | `student123` | Mendaftar (Enroll) ke kursus, mencetak sertifikat, dan menandai penyelesaian materi. |
+
+### Catatan Pengujian (Final Project Report)
+Untuk melihat secara lengkap bukti-bukti pengujian (*testing*), demonstrasi keamanan Hak Akses (403 Forbidden), serta unjuk kerja fitur tingkat lanjut seperti **Redis Caching**, **Redis Rate Limiting**, dan **Celery Asynchronous Tasks**, silakan merujuk pada dokumen laporan terpisah:
+👉 **[FINAL_PROJECT_REPORT.md](./FINAL_PROJECT_REPORT.md)**
+
+## 3. Endpoint Utama & Dokumentasi API
+
+Aplikasi ini menggunakan **Swagger UI** untuk memberikan visualisasi dokumentasi endpoint secara interaktif (OpenAPI). 
+Setelah server berjalan, dokumentasi bisa langsung dibuka dan diuji coba melalui *browser* di URL berikut:
+
+👉 **[http://localhost:8000/api/v1/docs/](http://localhost:8000/api/v1/docs/)**
+
+Atau Anda juga dapat mengimpor seluruh *collection* API secara otomatis ke dalam **Postman** menggunakan URL peta OpenAPI berikut:
+👉 **[http://localhost:8000/api/v1/openapi.json](http://localhost:8000/api/v1/openapi.json)**
+
+Berikut adalah beberapa modul endpoint utama yang tersedia:
+
+- **Authentication (`/api/v1/auth/`)**: 
+  Digunakan untuk *Register*, *Login*, dan mendapatkan Access Token (JWT). *(Gunakan akun demo di atas untuk login)*.
+- **Categories (`/api/v1/categories/`)**: 
+  Pengelolaan kategori kursus. Dilengkapi proteksi ketat (Hanya role `admin` yang diizinkan untuk mengubah data).
+- **Courses (`/api/v1/courses/`)**: 
+  Operasi CRUD untuk kursus. Dilengkapi dengan optimasi performa **Redis Caching** untuk menjamin respons yang sangat cepat.
+- **Lessons (`/api/v1/course/{id}/lessons/`)**: 
+  Manajemen struktur materi berurutan dalam sebuah kursus (Hanya pemilik/instruktur kursus yang berhak memodifikasi).
+- **Enrollments (`/api/v1/enrollments/`)**: 
+  Sistem pendaftaran kelas oleh siswa. Melibatkan **Celery Background Tasks** yang akan mengirimkan email notifikasi secara asinkron saat siswa berhasil mendaftar.
+- **Progress (`/api/v1/lessons/{id}/progress/`)**: 
+  Pencatatan ketuntasan belajar. Setiap aktivitas klik materi ini akan disimpan (Activity Logging) ke dalam **MongoDB**.
+- **Analytics & Report (`/api/v1/analytics/`)**: 
+  Endpoint pelaporan. Berisi *Pipeline Aggregation* MongoDB dan fitur *Export CSV* yang ditangani oleh **Celery Worker**.
 
 ---
-*Proyek ini merupakan bukti implementasi nyata integrasi sistem basis data SQL, NoSQL, In-Memory Caching, dan Message Broker pada arsitektur web modern.*
+*Dikembangkan menggunakan Django 5.x, Django Ninja, PostgreSQL, Redis, RabbitMQ, Celery, dan MongoDB.*

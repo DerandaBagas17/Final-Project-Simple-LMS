@@ -19,3 +19,11 @@ Thumbs.db
 # Office temporary files
 ~$*.docx
 ~$*.xlsx
+
+# Excluded by user for Final Project
+*.pdf
+*.docx
+*.doc
+
+# Security
+.env

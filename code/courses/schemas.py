@@ -1,5 +1,5 @@
 from ninja import ModelSchema, Schema
-from .models import Course, Category
+from .models import Course, Category, Enrollment
 from typing import Optional
 from datetime import datetime
 
@@ -43,3 +43,43 @@ class CourseIn(Schema):
     description: str
     category_id: int
     instructor_id: int
+
+class CoursePatchIn(Schema):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    category_id: Optional[int] = None
+
+class LessonSchema(Schema):
+    id: int
+    title: str
+    content: str
+    order: int
+class ProgressSchema(Schema):
+    lesson_id: int
+    is_completed: bool
+    completed_at: Optional[datetime]
+
+class CategoryIn(Schema):
+    name: str
+    parent_id: Optional[int] = None
+class LessonIn(Schema):
+    title: str
+    content: str
+    order: int
+class LessonReorderIn(Schema):
+    order: int
+
+class EnrollmentSchema(ModelSchema):
+    course: CourseSchema
+    progress_percentage: int
+
+    class Meta:
+        model = Enrollment
+        fields = ['id', 'enrolled_at']
+
+    @staticmethod
+    def resolve_progress_percentage(obj):
+        return obj.progress_percentage
+
+class LessonStateIn(Schema):
+    is_completed: bool

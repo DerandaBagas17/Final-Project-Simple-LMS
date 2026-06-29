@@ -14,9 +14,6 @@ class EnrollmentManager(models.Manager):
         return self.select_related("course")
 
 
-# ---------------------------------------------------------
-
-
 # 1. User Model (dengan role)
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -108,6 +105,16 @@ class Enrollment(models.Model):
 
     def __str__(self):
         return f"{self.student.username} enrolled in {self.course.title}"
+
+    @property
+    def progress_percentage(self):
+        total_lessons = self.course.lessons.count()
+        if total_lessons == 0:
+            return 0
+        # Hitung berapa materi di kursus ini yang sudah diselesaikan oleh student
+        completed = self.student.progress.filter(lesson__course=self.course, is_completed=True).count()
+        return round((completed / total_lessons) * 100)
+
 
 
 # 6. Progress Model (tracking lesson completion)
