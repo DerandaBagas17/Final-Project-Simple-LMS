@@ -125,3 +125,114 @@ class LMSApiTests(TestCase):
         cached_data_after = cache.get('course_list_cache')
         self.assertIsNone(cached_data_after)
 
+    def test_category_endpoints(self):
+        """Test 7: Menguji endpoint kategori (CRUD)"""
+        token = self.get_token('admin@test.com', 'password123')
+        
+        # Create Category
+        payload = {"name": "New Category", "parent_id": None}
+        resp = self.client.post('/api/v1/categories/', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token}')
+        self.assertEqual(resp.status_code, 200)
+        cat_id = resp.json().get('id')
+        
+        # Get List Category
+        resp = self.client.get('/api/v1/categories/')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Get Single Category
+        resp = self.client.get(f'/api/v1/categories/{cat_id}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Update Category
+        payload = {"name": "Updated Category", "parent_id": None}
+        resp = self.client.put(f'/api/v1/categories/{cat_id}', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Delete Category
+        resp = self.client.delete(f'/api/v1/categories/{cat_id}', HTTP_AUTHORIZATION=f'Bearer {token}')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_course_endpoints_extended(self):
+        """Test 8: Menguji endpoint courses extended (GET id, PUT, PATCH, DELETE)"""
+        token = self.get_token('instructor@test.com', 'password123')
+        
+        # Get single course
+        resp = self.client.get(f'/api/v1/courses/{self.course.id}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Update course (PUT)
+        payload = {"title": "Updated Python", "description": "Desc", "category_id": self.category.id, "instructor_id": self.instructor.id}
+        resp = self.client.put(f'/api/v1/courses/{self.course.id}', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Delete course
+        resp = self.client.delete(f'/api/v1/courses/{self.course.id}', HTTP_AUTHORIZATION=f'Bearer {token}')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_lesson_and_progress_endpoints(self):
+        """Test 9: Menguji endpoint Lessons dan Progress"""
+        token_instructor = self.get_token('instructor@test.com', 'password123')
+        token_student = self.get_token('student@test.com', 'password123')
+        
+        # Create Lesson
+        payload = {"title": "L1", "content": "C1", "order": 1}
+        resp = self.client.post(f'/api/v1/course/{self.course.id}/lessons', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token_instructor}')
+        self.assertEqual(resp.status_code, 200)
+        lesson_id = resp.json().get('id')
+        
+        # Get Lesson list
+        resp = self.client.get(f'/api/v1/course/{self.course.id}/lessons')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Enroll course as student
+        resp = self.client.post(f'/api/v1/enrollments/enroll/{self.course.id}', HTTP_AUTHORIZATION=f'Bearer {token_student}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Get my courses
+        resp = self.client.get('/api/v1/enrollments/my-courses', HTTP_AUTHORIZATION=f'Bearer {token_student}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Mark lesson completed
+        resp = self.client.post(f'/api/v1/lessons/{lesson_id}/progress/', HTTP_AUTHORIZATION=f'Bearer {token_student}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Get my progress
+        resp = self.client.get('/api/v1/progress/', HTTP_AUTHORIZATION=f'Bearer {token_student}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Delete Lesson
+        resp = self.client.delete(f'/api/v1/course/{self.course.id}/lessons/{lesson_id}', HTTP_AUTHORIZATION=f'Bearer {token_instructor}')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_edge_cases_and_errors(self):
+        """Test 10: Menguji Edge Cases dan Error Handling"""
+        token_student = self.get_token('student@test.com', 'password123')
+        
+        # 1. Login Failed
+        resp = self.client.post('/api/v1/auth/login', json.dumps({'email': 'wrong@test.com', 'password': '123'}), content_type='application/json')
+        self.assertEqual(resp.status_code, 401)
+        
+        # 2. Register duplicate email
+        payload = {"username": "new_student", "email": "student@test.com", "password": "123", "first_name": "A", "last_name": "B"}
+        resp = self.client.post('/api/v1/auth/register', json.dumps(payload), content_type='application/json')
+        self.assertEqual(resp.status_code, 400)
+        
+        # 3. Unauthorized access to update course
+        payload = {"title": "Hack", "description": "Desc", "category_id": self.category.id, "instructor_id": self.instructor.id}
+        resp = self.client.put(f'/api/v1/courses/{self.course.id}', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token_student}')
+        self.assertEqual(resp.status_code, 403)
+        
+        # 4. Request certificate when progress not 100%
+        enrollment = Enrollment.objects.create(student=self.student, course=self.course)
+        resp = self.client.post(f'/api/v1/enrollments/{enrollment.id}/certificate', HTTP_AUTHORIZATION=f'Bearer {token_student}')
+        self.assertEqual(resp.status_code, 400)
+        
+    def test_analytics_endpoints(self):
+        """Test 11: Menguji endpoint Analytics"""
+        # Endpoint ini bersifat publik (untuk demo), jadi kita bisa langsung GET
+        resp = self.client.get('/api/v1/analytics/report/')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Trigger export celery
+        resp = self.client.post('/api/v1/analytics/export/')
+        self.assertEqual(resp.status_code, 200)
