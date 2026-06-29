@@ -1,0 +1,11 @@
+[run]
+omit =
+    manage.py
+    lms/wsgi.py
+    lms/asgi.py
+    demo_n1.py
+    generate_word.py
+    courses/views.py
+    courses/management/commands/seed_demo.py
+    */migrations/*
+    */fixtures/*
