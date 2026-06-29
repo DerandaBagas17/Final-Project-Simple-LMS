@@ -236,3 +236,70 @@ class LMSApiTests(TestCase):
         # Trigger export celery
         resp = self.client.post('/api/v1/analytics/export/')
         self.assertEqual(resp.status_code, 200)
+
+    def test_deep_edge_cases_and_models(self):
+        """Test 12: Menguji Models string representation dan endpoint 404/403 tambahan"""
+        # Test models __str__
+        self.assertEqual(str(self.category), self.category.name)
+        self.assertEqual(str(self.course), self.course.title)
+        
+        token_student = self.get_token('student@test.com', 'password123')
+        token_instructor = self.get_token('instructor@test.com', 'password123')
+        
+        # Course not found
+        resp = self.client.get('/api/v1/courses/99999')
+        self.assertEqual(resp.status_code, 404)
+        
+        # PATCH course
+        payload = {"title": "Patched Title"}
+        resp = self.client.patch(f'/api/v1/courses/{self.course.id}', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token_instructor}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Instructor try to reorder lessons (fake payload)
+        payload = [{"lesson_id": 1, "order": 2}]
+        resp = self.client.put(f'/api/v1/course/{self.course.id}/lessons/reorder', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token_instructor}')
+        # Since lesson doesn't exist, might be 400, 404, or 422
+        self.assertTrue(resp.status_code in [200, 400, 404, 422])
+        
+    def test_celery_tasks(self):
+        """Test 13: Menguji Celery tasks secara langsung (Synchronous)"""
+        from courses.tasks import send_enrollment_email, export_course_report, generate_certificate, update_course_statistics
+        
+        # Panggil fungsi Celery layaknya fungsi biasa untuk coverage
+        res_email = send_enrollment_email('student@test.com', 'Python')
+        self.assertEqual(res_email, "Email sent successfully to student@test.com for course 'Python'")
+        
+        res_report = export_course_report()
+        self.assertEqual(res_report, "CSV report exported successfully")
+        
+        res_cert = generate_certificate(1, 2)
+        self.assertEqual(res_cert, "Certificate generated for user 1, course 2")
+        
+        res_stat = update_course_statistics()
+        self.assertEqual(res_stat, "Course statistics updated successfully")
+
+    def test_search_and_update_lesson(self):
+        """Test 14: Menguji pencarian dan update lesson untuk final coverage"""
+        token = self.get_token('instructor@test.com', 'password123')
+        
+        # Test Search Courses
+        resp = self.client.get('/api/v1/courses/?search=Python')
+        self.assertEqual(resp.status_code, 200)
+        
+        resp = self.client.get(f'/api/v1/courses/?category_id={self.category.id}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # Test Update Lesson
+        # 1. Create lesson first
+        payload = {"title": "L1", "content": "C1", "order": 1}
+        resp = self.client.post(f'/api/v1/course/{self.course.id}/lessons', json.dumps(payload), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token}')
+        lesson_id = resp.json().get('id')
+        
+        # 2. Update it
+        payload_upd = {"title": "L1 Updated", "content": "C1", "order": 1}
+        resp = self.client.put(f'/api/v1/course/{self.course.id}/lessons/{lesson_id}', json.dumps(payload_upd), content_type='application/json', HTTP_AUTHORIZATION=f'Bearer {token}')
+        self.assertEqual(resp.status_code, 200)
+        
+        # 3. Mark lesson completed error (not enrolled/auth error)
+        resp = self.client.post(f'/api/v1/lessons/{lesson_id}/progress/') # No auth
+        self.assertEqual(resp.status_code, 401)
